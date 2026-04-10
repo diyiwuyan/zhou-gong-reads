@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Node
+node_modules/
+npm-debug.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 开发工具脚本（不需要上传）
+inject_lecture.py
+build.py
+download_covers.py
+embed_data.py
+validate.py
+server.js

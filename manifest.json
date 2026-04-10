@@ -1,0 +1,28 @@
+{
+  "name": "周公解读",
+  "short_name": "周公解读",
+  "description": "48本经典好书精华解读，提炼核心智慧",
+  "start_url": "/zhou-gong-reads/",
+  "scope": "/zhou-gong-reads/",
+  "display": "standalone",
+  "background_color": "#0f0f1a",
+  "theme_color": "#1a1a2e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["books", "education", "lifestyle"],
+  "lang": "zh-CN",
+  "dir": "ltr"
+}
