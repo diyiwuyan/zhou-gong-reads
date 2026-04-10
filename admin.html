@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>周公解读 · 管理后台</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0f0f1a; color: #f0f0f5; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif; min-height: 100vh; }
+    .header { background: #1a1a2e; padding: 16px 24px; border-bottom: 1px solid rgba(108,99,255,0.2); display: flex; align-items: center; gap: 16px; }
+    .header h1 { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, #6C63FF, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header .badge { background: rgba(108,99,255,0.2); color: #8b85ff; font-size: 12px; padding: 3px 10px; border-radius: 20px; }
+    .login-box { max-width: 400px; margin: 80px auto; background: #1a1a2e; border-radius: 16px; padding: 32px; border: 1px solid rgba(108,99,255,0.2); }
+    .login-box h2 { font-size: 20px; margin-bottom: 24px; text-align: center; }
+    .input { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(108,99,255,0.2); border-radius: 10px; padding: 12px 16px; color: #f0f0f5; font-size: 15px; outline: none; margin-bottom: 12px; }
+    .input:focus { border-color: #6C63FF; }
+    .btn { width: 100%; background: #6C63FF; color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; }
+    .btn:disabled { opacity: 0.6; }
+    .btn-sm { background: none; border: 1px solid rgba(108,99,255,0.3); color: #8b85ff; border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer; }
+    .btn-approve { border-color: rgba(38,222,129,0.4); color: #26de81; }
+    .btn-reject { border-color: rgba(255,107,107,0.4); color: #ff6b6b; }
+    .error { color: #ff6b6b; font-size: 13px; text-align: center; margin-top: 8px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+    .tab { background: rgba(255,255,255,0.05); border: 1px solid rgba(108,99,255,0.2); color: #9090b0; border-radius: 8px; padding: 8px 20px; font-size: 14px; cursor: pointer; }
+    .tab.active { background: #6C63FF; color: #fff; border-color: #6C63FF; }
+    .stats-row { display: flex; gap: 16px; margin-bottom: 24px; }
+    .stat-card { flex: 1; background: #1a1a2e; border-radius: 12px; padding: 16px 20px; border: 1px solid rgba(108,99,255,0.15); }
+    .stat-num { font-size: 28px; font-weight: 800; color: #8b85ff; }
+    .stat-label { font-size: 12px; color: #5a5a7a; margin-top: 4px; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th { text-align: left; padding: 10px 14px; font-size: 12px; color: #5a5a7a; border-bottom: 1px solid rgba(108,99,255,0.1); }
+    .table td { padding: 12px 14px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .table tr:hover td { background: rgba(108,99,255,0.05); }
+    .status-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .status-pending { background: rgba(247,183,49,0.15); color: #f7b731; }
+    .status-approved { background: rgba(38,222,129,0.15); color: #26de81; }
+    .status-rejected { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+    .votes-badge { background: rgba(108,99,255,0.15); color: #8b85ff; padding: 2px 8px; border-radius: 20px; font-size: 12px; }
+    .empty { text-align: center; padding: 60px; color: #5a5a7a; font-size: 14px; }
+    .actions { display: flex; gap: 6px; }
+    .user-email { font-size: 12px; color: #5a5a7a; margin-top: 2px; }
+    .reason-text { font-size: 12px; color: #9090b0; margin-top: 4px; max-width: 300px; }
+    #loading { text-align: center; padding: 60px; color: #5a5a7a; }
+    .refresh-btn { margin-left: auto; background: none; border: 1px solid rgba(108,99,255,0.3); color: #8b85ff; border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <h2>🔐 管理后台</h2>
+    <input class="input" id="admin-email" type="email" placeholder="管理员邮箱">
+    <input class="input" id="admin-pass" type="password" placeholder="密码" onkeydown="if(event.key==='Enter')doAdminLogin()">
+    <button class="btn" onclick="doAdminLogin()">登录</button>
+    <div class="error" id="login-error"></div>
+  </div>
+</div>
+
+<div id="admin-screen" style="display:none">
+  <div class="header">
+    <h1>周公解读</h1>
+    <span class="badge">管理后台</span>
+    <span id="admin-user" style="font-size:13px;color:#5a5a7a;margin-left:8px"></span>
+    <button class="refresh-btn" onclick="loadData()">🔄 刷新</button>
+    <button class="btn-sm" onclick="doAdminLogout()" style="margin-left:8px">退出</button>
+  </div>
+
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-total-requests">-</div>
+        <div class="stat-label">书库提交总数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-pending">-</div>
+        <div class="stat-label">待审核</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-total-users">-</div>
+        <div class="stat-label">注册用户数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-total-progress">-</div>
+        <div class="stat-label">阅读记录数</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('requests', this)">📚 书库提交</button>
+      <button class="tab" onclick="switchTab('users', this)">👥 用户列表</button>
+    </div>
+
+    <div id="tab-requests">
+      <div id="loading">加载中...</div>
+      <table class="table" id="requests-table" style="display:none">
+        <thead>
+          <tr>
+            <th>书名 / 作者</th>
+            <th>推荐理由</th>
+            <th>票数</th>
+            <th>状态</th>
+            <th>提交时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="requests-body"></tbody>
+      </table>
+      <div class="empty" id="requests-empty" style="display:none">暂无提交记录</div>
+    </div>
+
+    <div id="tab-users" style="display:none">
+      <div id="loading-users">加载中...</div>
+      <table class="table" id="users-table" style="display:none">
+        <thead>
+          <tr>
+            <th>邮箱</th>
+            <th>注册时间</th>
+            <th>已读书籍</th>
+            <th>想读书籍</th>
+          </tr>
+        </thead>
+        <tbody id="users-body"></tbody>
+      </table>
+      <div class="empty" id="users-empty" style="display:none">暂无用户</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPA_URL = 'https://kskopljhykybcgoacbzm.supabase.co';
+const SUPA_KEY = 'sb_publishable_6SpRwJjelt-YXKg-DMR6wg_7qzL1p1u';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// 管理员邮箱白名单（只有这些邮箱能看到管理后台）
+const ADMIN_EMAILS = ['wuyan31@meituan.com', 'diyiwuyan@gmail.com'];
+
+let currentTab = 'requests';
+
+async function doAdminLogin() {
+  const email = document.getElementById('admin-email').value.trim();
+  const pass = document.getElementById('admin-pass').value;
+  const errEl = document.getElementById('login-error');
+  if (!email || !pass) { errEl.textContent = '请填写邮箱和密码'; return; }
+
+  const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
+  if (error) { errEl.textContent = '邮箱或密码错误'; return; }
+
+  // 检查是否是管理员（简单白名单，或者邮箱包含特定域名）
+  const userEmail = data.user.email;
+  const isAdmin = ADMIN_EMAILS.includes(userEmail) || userEmail.endsWith('@meituan.com');
+  if (!isAdmin) {
+    await supa.auth.signOut();
+    errEl.textContent = '无管理员权限';
+    return;
+  }
+
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  document.getElementById('admin-user').textContent = userEmail;
+  loadData();
+}
+
+async function doAdminLogout() {
+  await supa.auth.signOut();
+  location.reload();
+}
+
+// 检查是否已登录
+(async () => {
+  const { data: { session } } = await supa.auth.getSession();
+  if (session) {
+    const email = session.user.email;
+    const isAdmin = ADMIN_EMAILS.includes(email) || email.endsWith('@meituan.com');
+    if (isAdmin) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      document.getElementById('admin-user').textContent = email;
+      loadData();
+    }
+  }
+})();
+
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-requests').style.display = tab === 'requests' ? 'block' : 'none';
+  document.getElementById('tab-users').style.display = tab === 'users' ? 'block' : 'none';
+  if (tab === 'users') loadUsers();
+}
+
+async function loadData() {
+  await Promise.all([loadRequests(), loadStats()]);
+}
+
+async function loadStats() {
+  const [reqRes, progressRes] = await Promise.all([
+    supa.from('book_requests').select('id, status', { count: 'exact' }),
+    supa.from('reading_progress').select('id', { count: 'exact' })
+  ]);
+  const total = reqRes.count || 0;
+  const pending = (reqRes.data || []).filter(r => r.status === 'pending').length;
+  document.getElementById('stat-total-requests').textContent = total;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-total-progress').textContent = progressRes.count || 0;
+  // 用户数需要 service_role，这里用 profiles 表代替
+  const profileRes = await supa.from('profiles').select('id', { count: 'exact' });
+  document.getElementById('stat-total-users').textContent = profileRes.count || 0;
+}
+
+async function loadRequests() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('requests-table').style.display = 'none';
+  document.getElementById('requests-empty').style.display = 'none';
+
+  const { data, error } = await supa
+    .from('book_requests')
+    .select('*, profiles(nickname)')
+    .order('votes', { ascending: false })
+    .order('created_at', { ascending: false });
+
+  document.getElementById('loading').style.display = 'none';
+
+  if (error || !data || data.length === 0) {
+    document.getElementById('requests-empty').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('requests-table').style.display = 'table';
+  document.getElementById('requests-body').innerHTML = data.map(r => {
+    const date = new Date(r.created_at).toLocaleDateString('zh-CN');
+    const statusMap = { pending: '待审核', approved: '已通过', rejected: '已拒绝' };
+    const statusClass = { pending: 'status-pending', approved: 'status-approved', rejected: 'status-rejected' };
+    const nick = r.profiles?.nickname || '匿名';
+    return `<tr>
+      <td>
+        <div style="font-weight:600">${esc(r.title)}</div>
+        <div class="user-email">${r.author ? '作者：' + esc(r.author) : ''}</div>
+        <div class="user-email">提交人：${esc(nick)}</div>
+      </td>
+      <td><div class="reason-text">${r.reason ? esc(r.reason) : '<span style="color:#3a3a5a">无</span>'}</div></td>
+      <td><span class="votes-badge">👍 ${r.votes}</span></td>
+      <td><span class="status-badge ${statusClass[r.status]}">${statusMap[r.status]}</span></td>
+      <td style="color:#5a5a7a;font-size:12px">${date}</td>
+      <td>
+        <div class="actions">
+          ${r.status === 'pending' ? `
+            <button class="btn-sm btn-approve" onclick="updateRequest(${r.id}, 'approved')">✓ 通过</button>
+            <button class="btn-sm btn-reject" onclick="updateRequest(${r.id}, 'rejected')">✗ 拒绝</button>
+          ` : `<button class="btn-sm" onclick="updateRequest(${r.id}, 'pending')">↩ 重置</button>`}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function updateRequest(id, status) {
+  const { error } = await supa.from('book_requests').update({ status }).eq('id', id);
+  if (error) { alert('操作失败: ' + error.message); return; }
+  loadRequests();
+  loadStats();
+}
+
+async function loadUsers() {
+  document.getElementById('loading-users').style.display = 'block';
+  document.getElementById('users-table').style.display = 'none';
+
+  // 获取 profiles + 每人的阅读数据
+  const { data: profiles } = await supa.from('profiles').select('id, nickname, created_at').order('created_at', { ascending: false }).limit(100);
+  const { data: progress } = await supa.from('reading_progress').select('user_id, status');
+
+  document.getElementById('loading-users').style.display = 'none';
+
+  if (!profiles || profiles.length === 0) {
+    document.getElementById('users-empty').style.display = 'block';
+    return;
+  }
+
+  // 统计每人阅读数
+  const readCount = {};
+  const wantCount = {};
+  (progress || []).forEach(p => {
+    if (p.status === 'finished') readCount[p.user_id] = (readCount[p.user_id] || 0) + 1;
+    if (p.status === 'want') wantCount[p.user_id] = (wantCount[p.user_id] || 0) + 1;
+  });
+
+  document.getElementById('users-table').style.display = 'table';
+  document.getElementById('users-body').innerHTML = profiles.map(u => {
+    const date = new Date(u.created_at).toLocaleDateString('zh-CN');
+    return `<tr>
+      <td>
+        <div style="font-weight:600">${esc(u.nickname || '未设置')}</div>
+        <div class="user-email">ID: ${u.id.slice(0, 8)}...</div>
+      </td>
+      <td style="color:#5a5a7a;font-size:12px">${date}</td>
+      <td><span class="votes-badge">📖 ${readCount[u.id] || 0}</span></td>
+      <td><span class="votes-badge">🔖 ${wantCount[u.id] || 0}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
