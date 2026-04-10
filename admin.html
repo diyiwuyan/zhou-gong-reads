@@ -134,7 +134,7 @@ const SUPA_KEY = 'sb_publishable_6SpRwJjelt-YXKg-DMR6wg_7qzL1p1u';
 const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 // 管理员邮箱白名单（只有这些邮箱能看到管理后台）
-const ADMIN_EMAILS = ['wuyan31@meituan.com', 'diyiwuyan@gmail.com'];
+const ADMIN_EMAILS = ['wuyan31@meituan.com', 'diyiwuyan@gmail.com', 'diyiwuyan@163.com'];
 
 let currentTab = 'requests';
 
@@ -149,7 +149,7 @@ async function doAdminLogin() {
 
   // 检查是否是管理员（简单白名单，或者邮箱包含特定域名）
   const userEmail = data.user.email;
-  const isAdmin = ADMIN_EMAILS.includes(userEmail) || userEmail.endsWith('@meituan.com');
+  const isAdmin = ADMIN_EMAILS.includes(userEmail);
   if (!isAdmin) {
     await supa.auth.signOut();
     errEl.textContent = '无管理员权限';
@@ -172,7 +172,7 @@ async function doAdminLogout() {
   const { data: { session } } = await supa.auth.getSession();
   if (session) {
     const email = session.user.email;
-    const isAdmin = ADMIN_EMAILS.includes(email) || email.endsWith('@meituan.com');
+    const isAdmin = ADMIN_EMAILS.includes(email);
     if (isAdmin) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-screen').style.display = 'block';
