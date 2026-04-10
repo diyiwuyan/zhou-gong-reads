@@ -147,12 +147,11 @@ async function doAdminLogin() {
   const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
   if (error) { errEl.textContent = '邮箱或密码错误'; return; }
 
-  // 检查是否是管理员（简单白名单，或者邮箱包含特定域名）
   const userEmail = (data.user.email || '').toLowerCase().trim();
-  const isAdmin = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(userEmail);
-  if (!isAdmin) {
+  // 白名单校验
+  if (!ADMIN_EMAILS.map(e => e.toLowerCase()).includes(userEmail)) {
     await supa.auth.signOut();
-    errEl.textContent = '无管理员权限（' + userEmail + '）';
+    errEl.textContent = '该账号无管理员权限';
     return;
   }
 
