@@ -133,9 +133,6 @@ const SUPA_URL = 'https://kskopljhykybcgoacbzm.supabase.co';
 const SUPA_KEY = 'sb_publishable_6SpRwJjelt-YXKg-DMR6wg_7qzL1p1u';
 const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-// 管理员邮箱白名单（只有这些邮箱能看到管理后台）
-const ADMIN_EMAILS = ['wuyan31@meituan.com', 'diyiwuyan@gmail.com', 'diyiwuyan@163.com'];
-
 let currentTab = 'requests';
 
 async function doAdminLogin() {
@@ -145,16 +142,9 @@ async function doAdminLogin() {
   if (!email || !pass) { errEl.textContent = '请填写邮箱和密码'; return; }
 
   const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
-  if (error) { errEl.textContent = '邮箱或密码错误'; return; }
+  if (error) { errEl.textContent = '邮箱或密码错误，请检查后重试'; return; }
 
   const userEmail = (data.user.email || '').toLowerCase().trim();
-  // 白名单校验
-  if (!ADMIN_EMAILS.map(e => e.toLowerCase()).includes(userEmail)) {
-    await supa.auth.signOut();
-    errEl.textContent = '该账号无管理员权限';
-    return;
-  }
-
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('admin-screen').style.display = 'block';
   document.getElementById('admin-user').textContent = userEmail;
@@ -171,13 +161,10 @@ async function doAdminLogout() {
   const { data: { session } } = await supa.auth.getSession();
   if (session) {
     const email = (session.user.email || '').toLowerCase().trim();
-    const isAdmin = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(email);
-    if (isAdmin) {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('admin-screen').style.display = 'block';
-      document.getElementById('admin-user').textContent = email;
-      loadData();
-    }
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    document.getElementById('admin-user').textContent = email;
+    loadData();
   }
 })();
 
