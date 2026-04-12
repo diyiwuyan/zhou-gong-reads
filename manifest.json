@@ -1,6 +1,6 @@
 {
-  "name": "周公解读",
-  "short_name": "周公解读",
+  "name": "周公解书",
+  "short_name": "周公解书",
   "description": "48本经典好书精华解读，提炼核心智慧",
   "start_url": "/zhou-gong-reads/",
   "scope": "/zhou-gong-reads/",
