@@ -1,5 +1,5 @@
-// Service Worker for 周公解读 PWA
-const CACHE_NAME = 'zhougong-reads-v5';
+// Service Worker for 周公解书 PWA
+const CACHE_NAME = 'zhougong-reads-v6';
 const BASE = '/zhou-gong-reads';
 const STATIC_ASSETS = [
   BASE + '/',
@@ -27,26 +27,54 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch: cache-first strategy
+// Fetch strategy:
+// - index.html / navigation: 网络优先，失败才用缓存（确保始终拿最新版）
+// - 图片/静态资源: 缓存优先，加速加载
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
   if (url.origin !== location.origin) return;
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        if (!response || response.status !== 200 || response.type !== 'basic') return response;
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        return response;
-      }).catch(() => {
-        if (event.request.destination === 'document') {
-          return caches.match(BASE + '/index.html');
+  const isNavigation = event.request.mode === 'navigate';
+  const isHtml = url.pathname.endsWith('.html') || url.pathname.endsWith('/');
+  const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url.pathname);
+
+  if (isNavigation || isHtml) {
+    // HTML / 导航请求：网络优先
+    event.respondWith(
+      fetch(event.request).then(response => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
-      });
-    })
-  );
+        return response;
+      }).catch(() => caches.match(event.request))
+    );
+  } else if (isImage) {
+    // 图片：缓存优先（图片不会变，缓存后极速加载）
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        if (cached) return cached;
+        return fetch(event.request).then(response => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          }
+          return response;
+        });
+      })
+    );
+  } else {
+    // 其他资源：网络优先
+    event.respondWith(
+      fetch(event.request).then(response => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => caches.match(event.request))
+    );
+  }
 });
