@@ -144,13 +144,23 @@
     .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
     .tag { font-size: 11px; padding: 3px 10px; border-radius: 10px; background: rgba(108,99,255,0.15); color: var(--accent-light); border: 1px solid rgba(108,99,255,0.3); }
 
-    .detail-actions { display: flex; gap: 10px; padding: 0 16px 16px; }
-    .action-btn { flex: 1; padding: 12px; border-radius: var(--radius-sm); border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
-    .action-btn.primary { background: var(--accent); color: #fff; }
-    .action-btn.primary:hover { background: var(--accent-light); }
-    .action-btn.secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); }
-    .action-btn.secondary.active { background: rgba(38,222,129,0.15); color: #26de81; border-color: rgba(38,222,129,0.4); }
-    .action-btn.want-btn.active { background: rgba(108,99,255,0.15); color: var(--accent-light); border-color: rgba(108,99,255,0.4); }
+.detail-actions { display: flex; gap: 10px; padding: 0 16px 16px; }
+.action-btn { flex: 1; padding: 12px; border-radius: var(--radius-sm); border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.action-btn.primary { background: var(--accent); color: #fff; }
+.action-btn.primary:hover { background: var(--accent-light); }
+.action-btn.secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); }
+.action-btn.secondary.active { background: rgba(38,222,129,0.15); color: #26de81; border-color: rgba(38,222,129,0.4); }
+.action-btn.want-btn.active { background: rgba(108,99,255,0.15); color: var(--accent-light); border-color: rgba(108,99,255,0.4); }
+
+/* ===== Status Badges (已读/想读) ===== */
+.detail-status-row { display: flex; gap: 8px; padding: 0 16px 14px; }
+.status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; background: var(--bg-card); color: var(--text-muted); border-color: var(--border); }
+.status-badge.read-badge-btn.active { background: rgba(38,222,129,0.12); color: #26de81; border-color: rgba(38,222,129,0.35); }
+.status-badge.want-badge-btn.active { background: rgba(108,99,255,0.12); color: var(--accent-light); border-color: rgba(108,99,255,0.35); }
+
+/* ===== Lecture Listen Button ===== */
+.lecture-listen-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: calc(100% - 32px); margin: 0 16px 16px; padding: 13px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; }
+.lecture-listen-btn:hover { background: var(--accent-light); transform: translateY(-1px); }
 
     .detail-section { padding: 0 16px 20px; }
     .detail-section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
@@ -1405,19 +1415,19 @@ function renderDetail(book) {
     </div>
   </div>
 
-  <div class="detail-actions">
-    <button class="action-btn primary" onclick="openListenPage(${book.id})">🎧 听书</button>
-    <button class="action-btn secondary ${read ? 'active' : ''}" id="read-btn-${book.id}" onclick="toggleReadBtn(${book.id})">
-      ${read ? '✅ 已读' : '📖 标记已读'}
+  <div class="detail-status-row">
+    <button class="status-badge read-badge-btn ${read ? 'active' : ''}" id="read-btn-${book.id}" onclick="toggleReadBtn(${book.id})">
+      ${read ? '✅ 已读' : '○ 标记已读'}
     </button>
-    <button class="action-btn secondary want-btn ${want ? 'active' : ''}" id="want-btn-${book.id}" onclick="toggleWantBtn(${book.id})">
-      ${want ? '🔖 已收藏' : '🔖 想读'}
+    <button class="status-badge want-badge-btn ${want ? 'active' : ''}" id="want-btn-${book.id}" onclick="toggleWantBtn(${book.id})">
+      ${want ? '🔖 已收藏' : '+ 想读'}
     </button>
   </div>
 
   <div class="detail-tabs">
-    <div class="detail-tab active" onclick="switchDetailTab('info', this)">📖 书籍详情</div>
-    <div class="detail-tab" onclick="switchDetailTab('lecture', this)">🎙️ 讲书</div>
+    <div class="detail-tab active" onclick="switchDetailTab('info', this)">内容简介</div>
+    <div class="detail-tab" onclick="switchDetailTab('lecture', this)">精华解读</div>
+    <div class="detail-tab" onclick="switchDetailTab('framework', this)">框架与清单</div>
   </div>
 
   <div id="detail-tab-info" class="detail-tab-content active" style="padding-top:12px">
@@ -1453,7 +1463,12 @@ function renderDetail(book) {
   </div>
 
   <div id="detail-tab-lecture" class="detail-tab-content" style="padding-top:12px">
-    ${renderLecture(book)}
+    <button class="lecture-listen-btn" onclick="openListenPage(${book.id})">🎧 听本书</button>
+    ${renderLectureEssence(book)}
+  </div>
+
+  <div id="detail-tab-framework" class="detail-tab-content" style="padding-top:12px">
+    ${renderLectureFramework(book)}
   </div>
   `;
   document.getElementById('detail-content').innerHTML = html;
@@ -1466,14 +1481,20 @@ function switchDetailTab(tab, el) {
   document.getElementById('detail-tab-' + tab).classList.add('active');
 }
 
-function renderLecture(book) {
+function renderLectureEssence(book) {
   const lec = book.lecture;
   if (!lec) return '<div style="padding:40px;text-align:center;color:var(--text-muted)">讲书内容即将上线</div>';
   return `
-    <div class="lecture-section">
-      <div class="lecture-section-title">🔥 精华解读</div>
+    <div class="lecture-section" style="padding-bottom:24px">
       <div class="lecture-body">${lec.essence}</div>
     </div>
+  `;
+}
+
+function renderLectureFramework(book) {
+  const lec = book.lecture;
+  if (!lec) return '<div style="padding:40px;text-align:center;color:var(--text-muted)">讲书内容即将上线</div>';
+  return `
     <div class="lecture-section">
       <div class="lecture-section-title">🧩 思维框架</div>
       <div class="lecture-framework">
@@ -1504,8 +1525,8 @@ function toggleReadBtn(id) {
   toggleRead(id);
   const btn = document.getElementById('read-btn-' + id);
   const read = isRead(id);
-  btn.className = `action-btn secondary ${read ? 'active' : ''}`;
-  btn.innerHTML = read ? '✅ 已读' : '📖 标记已读';
+  btn.className = `status-badge read-badge-btn ${read ? 'active' : ''}`;
+  btn.innerHTML = read ? '✅ 已读' : '○ 标记已读';
   showToast(read ? '已标记为已读 ✅' : '已取消已读标记');
   renderBookGrid(currentCat === 'all' ? allBooks : allBooks.filter(b => b.category === currentCat));
 }
@@ -1514,8 +1535,8 @@ function toggleWantBtn(id) {
   toggleWant(id);
   const btn = document.getElementById('want-btn-' + id);
   const want = isWant(id);
-  btn.className = `action-btn secondary want-btn ${want ? 'active' : ''}`;
-  btn.innerHTML = want ? '🔖 已收藏' : '🔖 想读';
+  btn.className = `status-badge want-badge-btn ${want ? 'active' : ''}`;
+  btn.innerHTML = want ? '🔖 已收藏' : '+ 想读';
   showToast(want ? '已加入想读列表 🔖' : '已取消想读');
   renderBookGrid(currentCat === 'all' ? allBooks : allBooks.filter(b => b.category === currentCat));
 }
