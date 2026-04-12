@@ -1,5 +1,5 @@
 -- ============================================================
--- profiles 表：存储用户昵称等信息
+-- profiles 表：存储用户昵称、最近学习书籍等信息
 -- 在 Supabase Dashboard > SQL Editor 中执行
 -- ============================================================
 
@@ -7,6 +7,7 @@
 CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   nickname TEXT,
+  last_book_id INTEGER,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -55,3 +56,6 @@ INSERT INTO public.profiles (id, nickname)
 SELECT id, split_part(email, '@', 1)
 FROM auth.users
 ON CONFLICT (id) DO NOTHING;
+
+-- 7. 为已有 profiles 表添加 last_book_id 字段（如果已执行过旧版本）
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS last_book_id INTEGER;

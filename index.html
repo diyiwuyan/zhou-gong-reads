@@ -319,6 +319,76 @@
     .profile-logout-btn { width: 100%; background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.2); color: #ff6b6b; border-radius: 12px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; }
     /* ===== Submit Book ===== */
     .submit-book-btn { background: var(--accent); color: #fff; border: none; border-radius: 20px; padding: 10px 24px; font-size: 14px; font-weight: 600; cursor: pointer; }
+
+    /* ===== Continue Reading Card ===== */
+    .continue-card {
+      background: linear-gradient(135deg, #1e2a4a 0%, #2d1b69 100%);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      cursor: pointer;
+      border: 1px solid rgba(108,99,255,0.3);
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .continue-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: radial-gradient(circle, rgba(108,99,255,0.25) 0%, transparent 70%); }
+    .continue-card:active { transform: scale(0.98); }
+    .continue-cover { width: 52px; height: 78px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: var(--bg-card); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+    .continue-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .continue-info { flex: 1; min-width: 0; }
+    .continue-label { font-size: 11px; color: var(--accent-light); font-weight: 600; margin-bottom: 4px; letter-spacing: 0.5px; }
+    .continue-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .continue-author { font-size: 12px; color: var(--text-muted); }
+    .continue-arrow { font-size: 20px; color: var(--accent-light); flex-shrink: 0; }
+
+    /* ===== Badges Page ===== */
+    #page-badges { background: var(--bg-primary); }
+    .badges-header { padding: 20px 16px 8px; }
+    .badges-header-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .badges-header-sub { font-size: 13px; color: var(--text-muted); }
+    .badges-progress-wrap { margin: 16px 0 4px; }
+    .badges-progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+    .badges-progress-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+    .badges-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); border-radius: 3px; transition: width 0.6s ease; }
+
+    .badge-section-title { font-size: 14px; font-weight: 700; color: var(--text-secondary); margin: 20px 16px 10px; display: flex; align-items: center; gap: 6px; }
+    .badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0 16px; }
+    .badge-item { background: var(--bg-card); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.2s; border: 1.5px solid transparent; position: relative; }
+    .badge-item.earned { border-color: rgba(108,99,255,0.4); background: rgba(108,99,255,0.08); }
+    .badge-item.earned:active { transform: scale(0.96); }
+    .badge-item.locked { opacity: 0.45; cursor: default; }
+    .badge-icon { font-size: 36px; margin-bottom: 8px; display: block; }
+    .badge-item.locked .badge-icon { filter: grayscale(1); }
+    .badge-name { font-size: 12px; font-weight: 700; margin-bottom: 3px; line-height: 1.3; }
+    .badge-desc { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+    .badge-earned-mark { position: absolute; top: 6px; right: 6px; font-size: 12px; }
+    .badge-new-mark { position: absolute; top: 6px; left: 6px; background: #FC5C65; color: #fff; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 6px; }
+
+    /* ===== Badge Share Modal ===== */
+    #badge-share-modal { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.85); align-items: flex-end; justify-content: center; }
+    #badge-share-modal.active { display: flex; }
+    .badge-share-sheet { background: var(--bg-secondary); border-radius: 20px 20px 0 0; padding: 20px; width: 100%; max-width: 480px; }
+    .badge-share-sheet-title { text-align: center; font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+    #badge-share-card { border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
+    .badge-card-inner { padding: 28px 24px; text-align: center; position: relative; overflow: hidden; }
+    .badge-card-inner::before { content: ''; position: absolute; top: -40px; left: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); }
+    .badge-card-inner::after { content: ''; position: absolute; bottom: -40px; right: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%); }
+    .badge-card-icon { font-size: 72px; margin-bottom: 12px; display: block; }
+    .badge-card-name { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .badge-card-desc { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 20px; line-height: 1.5; }
+    .badge-card-user { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+    .badge-card-app { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #6C63FF, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .badge-share-actions { display: flex; gap: 10px; }
+    .badge-share-btn { flex: 1; padding: 12px; border-radius: var(--radius-sm); border: none; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .badge-share-btn.save { background: var(--accent); color: #fff; }
+    .badge-share-btn.cancel { background: var(--bg-card); color: var(--text-primary); }
+
+    /* ===== Nav badge dot ===== */
+    .nav-badge-dot { position: absolute; top: 6px; right: calc(50% - 18px); width: 8px; height: 8px; background: #FC5C65; border-radius: 50%; border: 2px solid var(--bg-secondary); }
   </style>
 </head>
 <body>
@@ -346,6 +416,9 @@
     <!-- Home Page -->
     <div id="page-home" class="page active">
       <div class="page-content">
+        <!-- Continue Reading -->
+        <div id="continue-reading-wrap"></div>
+
         <!-- Banner -->
         <div class="banner fade-in">
           <div class="banner-title">📚 每天一本好书</div>
@@ -407,6 +480,26 @@
         <div id="shelf-content"></div>
       </div>
     </div>
+
+    <!-- Badges Page -->
+    <div id="page-badges" class="page">
+      <div class="page-content" style="padding-top:0">
+        <div class="badges-header">
+          <div class="badges-header-title">🏅 我的勋章</div>
+          <div class="badges-header-sub">完成阅读目标，解锁专属成就</div>
+          <div class="badges-progress-wrap">
+            <div class="badges-progress-label">
+              <span>已获得 <span id="badge-earned-count">0</span> 枚</span>
+              <span>共 <span id="badge-total-count">0</span> 枚</span>
+            </div>
+            <div class="badges-progress-bar">
+              <div class="badges-progress-fill" id="badge-progress-fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div id="badges-content"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Bottom Nav -->
@@ -422,6 +515,11 @@
     <button class="nav-item" onclick="switchPage('shelf', this)">
       <span class="nav-icon">📚</span>
       <span class="nav-label">书架</span>
+    </button>
+    <button class="nav-item" id="nav-badges-btn" onclick="switchPage('badges', this)" style="position:relative">
+      <span class="nav-icon">🏅</span>
+      <span class="nav-label">勋章</span>
+      <span class="nav-badge-dot" id="nav-badge-dot" style="display:none"></span>
     </button>
   </div>
 </div>
@@ -514,6 +612,18 @@
   </div>
 </div>
 
+<!-- Badge Share Modal -->
+<div id="badge-share-modal" onclick="if(event.target===this)closeBadgeShareModal()">
+  <div class="badge-share-sheet slide-up">
+    <div class="badge-share-sheet-title">分享勋章</div>
+    <div id="badge-share-card"></div>
+    <div class="badge-share-actions">
+      <button class="badge-share-btn save" onclick="saveBadgeCard()">💾 保存图片</button>
+      <button class="badge-share-btn cancel" onclick="closeBadgeShareModal()">取消</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div id="toast"></div>
 
@@ -531,6 +641,8 @@ let currentCat = 'all';
 let prevPage = 'home';
 let currentShelfTab = 'read';
 let speechSynth = window.speechSynthesis;
+let lastBookId = null;       // 上次学习的书籍 ID
+let newBadgeIds = [];        // 新解锁的勋章（用于红点提示）
 
 // ===== Supabase =====
 const SUPA_URL = 'https://kskopljhykybcgoacbzm.supabase.co';
@@ -557,9 +669,17 @@ async function initAuth() {
 
 async function loadUserProfile() {
   if (!currentUser) return;
-  const { data } = await supa.from('profiles').select('nickname').eq('id', currentUser.id).single();
+  const { data } = await supa.from('profiles').select('nickname,last_book_id').eq('id', currentUser.id).single();
   userProfile = data || null;
+  if (data && data.last_book_id) {
+    lastBookId = data.last_book_id;
+    localStorage.setItem('zg_last_book', String(data.last_book_id));
+  } else {
+    const local = localStorage.getItem('zg_last_book');
+    if (local) lastBookId = parseInt(local);
+  }
   updateAuthUI();
+  renderContinueReading();
 }
 
 async function saveNickname(nick) {
@@ -752,6 +872,19 @@ function init() {
     renderBookGrid(allBooks);
     renderListenPage();
     updateBannerStats();
+    // 初始化继续学习（从 localStorage 读取，不依赖登录）
+    const localLastBook = localStorage.getItem('zg_last_book');
+    if (localLastBook) { lastBookId = parseInt(localLastBook); renderContinueReading(); }
+    // 初始化勋章状态（检查是否有新勋章未查看）
+    const prevBadges = new Set(getEarnedBadgeIds());
+    const currentBadges = computeEarnedBadges();
+    const hasNew = currentBadges.some(id => !prevBadges.has(id));
+    if (hasNew) {
+      newBadgeIds = currentBadges.filter(id => !prevBadges.has(id));
+      localStorage.setItem('zg_badges', JSON.stringify(currentBadges));
+      const dot = document.getElementById('nav-badge-dot');
+      if (dot) dot.style.display = 'block';
+    }
     initAuth();
   } catch(e) {
     console.error('初始化失败', e);
@@ -772,6 +905,7 @@ async function toggleRead(id) {
   else list.splice(idx, 1);
   localStorage.setItem('zg_read', JSON.stringify(list));
   updateBannerStats();
+  if (adding) checkAndUpdateBadges();
   if (currentUser) {
     if (adding) await supa.from('reading_progress').upsert({ user_id: currentUser.id, book_id: id, status: 'finished', last_read_at: new Date().toISOString() }, { onConflict: 'user_id,book_id' });
     else await supa.from('reading_progress').delete().eq('user_id', currentUser.id).eq('book_id', id).eq('status', 'finished');
@@ -794,6 +928,160 @@ async function toggleWant(id) {
 function isRead(id) { return getReadList().includes(id); }
 function isWant(id) { return getWantList().includes(id); }
 
+// ===== Badge System =====
+const BADGE_DEFS = [
+  // 里程碑类
+  { id: 'first_book',    icon: '🌱', name: '初心者',     desc: '完成第一本书的学习',           color: ['#1e3a2f','#0d5c3a'], check: (r) => r.length >= 1 },
+  { id: 'five_books',    icon: '📚', name: '书虫',       desc: '累计学完5本书',                color: ['#1a2a3e','#1b4d6b'], check: (r) => r.length >= 5 },
+  { id: 'ten_books',     icon: '🔥', name: '阅读达人',   desc: '累计学完10本书',               color: ['#3a1a1a','#6b2020'], check: (r) => r.length >= 10 },
+  { id: 'twenty_books',  icon: '⚡', name: '知识猎手',   desc: '累计学完20本书',               color: ['#2a1a3e','#5c1b6b'], check: (r) => r.length >= 20 },
+  { id: 'all_books',     icon: '👑', name: '智慧之王',   desc: '完成全部48本书的学习！',        color: ['#3e2a1a','#6b4d1b'], check: (r) => r.length >= 48 },
+  // 领域类
+  { id: 'mindset_done',  icon: '🧠', name: '思维大师',   desc: '学完「思维认知」全部书籍',     color: ['#1a1a3e','#2d1b69'], check: (r, cats) => isCatDone(r, cats, 'mindset') },
+  { id: 'wealth_done',   icon: '💰', name: '财富智者',   desc: '学完「财富投资」全部书籍',     color: ['#3e3a1a','#6b5c1b'], check: (r, cats) => isCatDone(r, cats, 'wealth') },
+  { id: 'psych_done',    icon: '🌱', name: '心灵成长者', desc: '学完「心理成长」全部书籍',     color: ['#1e3a2f','#0d5c3a'], check: (r, cats) => isCatDone(r, cats, 'psychology') },
+  { id: 'leader_done',   icon: '🏆', name: '领导力专家', desc: '学完「领导力与管理」全部书籍', color: ['#3a1a1a','#6b2020'], check: (r, cats) => isCatDone(r, cats, 'leadership') },
+  { id: 'science_done',  icon: '🔭', name: '未来探索者', desc: '学完「科学与未来」全部书籍',   color: ['#1a2a3e','#1b4d6b'], check: (r, cats) => isCatDone(r, cats, 'science') },
+  { id: 'philo_done',    icon: '☯️', name: '哲学思考者', desc: '学完「哲学与人生」全部书籍',   color: ['#2a1a3e','#5c1b6b'], check: (r, cats) => isCatDone(r, cats, 'philosophy') },
+  // 特殊类
+  { id: 'early_bird',    icon: '🌅', name: '早起鸟',     desc: '开始你的阅读之旅',             color: ['#1a3e3a','#1b6b5c'], check: (r) => r.length >= 1 },
+  { id: 'consistent',    icon: '💎', name: '坚持者',     desc: '累计学完30本书',               color: ['#1a2a3e','#2d4a6b'], check: (r) => r.length >= 30 },
+];
+
+function isCatDone(readList, cats, catId) {
+  if (!allBooks.length) return false;
+  const catBooks = allBooks.filter(b => b.category === catId);
+  return catBooks.length > 0 && catBooks.every(b => readList.includes(b.id));
+}
+
+function getEarnedBadgeIds() {
+  return JSON.parse(localStorage.getItem('zg_badges') || '[]');
+}
+
+function computeEarnedBadges() {
+  const readList = getReadList();
+  return BADGE_DEFS.filter(b => b.check(readList, allCategories)).map(b => b.id);
+}
+
+function checkAndUpdateBadges() {
+  const prev = new Set(getEarnedBadgeIds());
+  const current = computeEarnedBadges();
+  const newOnes = current.filter(id => !prev.has(id));
+  if (newOnes.length > 0) {
+    localStorage.setItem('zg_badges', JSON.stringify(current));
+    newBadgeIds = [...new Set([...newBadgeIds, ...newOnes])];
+    // 显示红点
+    const dot = document.getElementById('nav-badge-dot');
+    if (dot) dot.style.display = 'block';
+    // Toast 提示
+    const badge = BADGE_DEFS.find(b => b.id === newOnes[0]);
+    if (badge) showToast(`🎉 解锁勋章：${badge.icon} ${badge.name}！`);
+  } else {
+    localStorage.setItem('zg_badges', JSON.stringify(current));
+  }
+}
+
+function switchPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+  if (name === 'shelf') renderShelf(currentShelfTab);
+  if (name === 'listen') renderListenPage();
+  if (name === 'badges') {
+    renderBadgesPage();
+    // 清除红点
+    newBadgeIds = [];
+    const dot = document.getElementById('nav-badge-dot');
+    if (dot) dot.style.display = 'none';
+  }
+}
+
+function renderBadgesPage() {
+  const earned = new Set(computeEarnedBadges());
+  const prevEarned = new Set(getEarnedBadgeIds());
+  const total = BADGE_DEFS.length;
+  const earnedCount = earned.size;
+
+  // 更新进度条
+  const countEl = document.getElementById('badge-earned-count');
+  const totalEl = document.getElementById('badge-total-count');
+  const fillEl = document.getElementById('badge-progress-fill');
+  if (countEl) countEl.textContent = earnedCount;
+  if (totalEl) totalEl.textContent = total;
+  if (fillEl) fillEl.style.width = Math.round((earnedCount / total) * 100) + '%';
+
+  // 分组渲染
+  const milestones = BADGE_DEFS.filter(b => ['first_book','five_books','ten_books','twenty_books','consistent','all_books'].includes(b.id));
+  const categories = BADGE_DEFS.filter(b => b.id.endsWith('_done'));
+  const special = BADGE_DEFS.filter(b => ['early_bird'].includes(b.id));
+
+  const container = document.getElementById('badges-content');
+  if (!container) return;
+
+  function renderGroup(title, defs) {
+    const isNew = (id) => newBadgeIds.includes(id) || (!prevEarned.has(id) && earned.has(id));
+    return `
+    <div class="badge-section-title">${title}</div>
+    <div class="badge-grid">
+      ${defs.map(b => {
+        const isEarned = earned.has(b.id);
+        return `
+        <div class="badge-item ${isEarned ? 'earned' : 'locked'}" onclick="${isEarned ? `openBadgeShare('${b.id}')` : ''}">
+          ${isEarned && isNew(b.id) ? '<span class="badge-new-mark">NEW</span>' : ''}
+          ${isEarned ? '<span class="badge-earned-mark">✨</span>' : ''}
+          <span class="badge-icon">${b.icon}</span>
+          <div class="badge-name">${b.name}</div>
+          <div class="badge-desc">${b.desc}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  container.innerHTML =
+    renderGroup('🏆 阅读里程碑', milestones) +
+    renderGroup('📂 领域完成', categories) +
+    renderGroup('⭐ 特殊成就', special) +
+    '<div style="height:20px"></div>';
+}
+
+function openBadgeShare(badgeId) {
+  const badge = BADGE_DEFS.find(b => b.id === badgeId);
+  if (!badge) return;
+  const [c1, c2] = badge.color;
+  const nick = (userProfile && userProfile.nickname) ? userProfile.nickname : (currentUser ? currentUser.email.split('@')[0] : '读者');
+  document.getElementById('badge-share-card').innerHTML = `
+  <div class="badge-card-inner" style="background:linear-gradient(135deg,${c1} 0%,${c2} 100%)">
+    <span class="badge-card-icon">${badge.icon}</span>
+    <div class="badge-card-name">${badge.name}</div>
+    <div class="badge-card-desc">${badge.desc}</div>
+    <div class="badge-card-user">${esc(nick)} 获得了此勋章</div>
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.15)">
+      <div class="badge-card-app">周公解读</div>
+    </div>
+  </div>`;
+  document.getElementById('badge-share-modal').classList.add('active');
+}
+
+function closeBadgeShareModal() {
+  document.getElementById('badge-share-modal').classList.remove('active');
+}
+
+function saveBadgeCard() {
+  const card = document.getElementById('badge-share-card').firstElementChild;
+  if (!card) return;
+  if (typeof html2canvas === 'undefined') { showToast('图片生成功能需要网络支持'); return; }
+  showToast('正在生成图片...');
+  html2canvas(card, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = '周公解读_勋章.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('勋章卡已保存 🎉');
+    closeBadgeShareModal();
+  }).catch(() => showToast('生成失败，请重试'));
+}
+
 async function syncProgressFromCloud() {
   if (!currentUser) return;
   const { data, error } = await supa.from('reading_progress').select('book_id,status').eq('user_id', currentUser.id);
@@ -803,6 +1091,7 @@ async function syncProgressFromCloud() {
   updateBannerStats();
   renderBookGrid(currentCat === 'all' ? allBooks : allBooks.filter(b => b.category === currentCat));
   renderShelf(currentShelfTab);
+  checkAndUpdateBadges();
   showToast('进度已同步 ☁️');
 }
 
@@ -898,15 +1187,6 @@ function renderBookGrid(books) {
 }
 
 // ===== Page Navigation =====
-function switchPage(name, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  if (el) el.classList.add('active');
-  if (name === 'shelf') renderShelf(currentShelfTab);
-  if (name === 'listen') renderListenPage();
-}
-
 function openDetail(bookId) {
   const book = allBooks.find(b => b.id === bookId);
   if (!book) return;
@@ -916,6 +1196,46 @@ function openDetail(bookId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-detail').classList.add('active');
   document.getElementById('page-detail').scrollTop = 0;
+  // 记录上次学习进度
+  recordLastBook(bookId);
+}
+
+async function recordLastBook(bookId) {
+  if (lastBookId === bookId) return;
+  lastBookId = bookId;
+  localStorage.setItem('zg_last_book', String(bookId));
+  renderContinueReading();
+  if (currentUser) {
+    await supa.from('profiles').upsert({ id: currentUser.id, last_book_id: bookId, updated_at: new Date().toISOString() }, { onConflict: 'id' });
+  }
+}
+
+function renderContinueReading() {
+  const wrap = document.getElementById('continue-reading-wrap');
+  if (!wrap) return;
+  // 未登录时也从 localStorage 读取
+  const bid = lastBookId || parseInt(localStorage.getItem('zg_last_book') || '0');
+  if (!bid || !allBooks.length) { wrap.innerHTML = ''; return; }
+  const book = allBooks.find(b => b.id === bid);
+  if (!book) { wrap.innerHTML = ''; return; }
+  const [c1, c2] = getCoverColor(book.id);
+  const emoji = getCoverEmoji(book.category);
+  const safeTitle = esc(book.title);
+  const safeAuthor = esc(book.author.split('/')[0].trim());
+  wrap.innerHTML = `
+  <div class="continue-card" onclick="openDetail(${book.id})">
+    <div class="continue-cover" style="background:linear-gradient(135deg,${c1},${c2})">
+      <img src="${getBookCoverUrl(book.id) || 'assets/covers/' + book.cover}" alt="${safeTitle}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span style="display:none;font-size:22px">${emoji}</span>
+    </div>
+    <div class="continue-info">
+      <div class="continue-label">▶ 继续学习</div>
+      <div class="continue-title">${safeTitle}</div>
+      <div class="continue-author">${safeAuthor}</div>
+    </div>
+    <div class="continue-arrow">›</div>
+  </div>`;
 }
 
 function goBack() {
