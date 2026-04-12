@@ -1,5 +1,5 @@
 // Service Worker for 周公解读 PWA
-const CACHE_NAME = 'zhougong-reads-v4';
+const CACHE_NAME = 'zhougong-reads-v5';
 const BASE = '/zhou-gong-reads';
 const STATIC_ASSETS = [
   BASE + '/',
