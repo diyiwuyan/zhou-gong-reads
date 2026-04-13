@@ -431,7 +431,7 @@
   <div id="header">
     <div>
       <div class="logo" onclick="goHome()" style="cursor:pointer">周公解书</div>
-      <div class="subtitle">48本经典，精华解读</div>
+      <div class="subtitle">100本经典，精华解读</div>
     </div>
     <div class="header-right">
       <button class="icon-btn" onclick="openSubmitModal()" title="提交书籍">➕</button>
@@ -455,9 +455,9 @@
         <!-- Banner -->
         <div class="banner fade-in">
           <div class="banner-title">📚 每天一本好书</div>
-          <div class="banner-sub">精选48本改变人生的经典，提炼核心智慧，让阅读更高效</div>
+          <div class="banner-sub">精选100本改变人生的经典，提炼核心智慧，让阅读更高效</div>
           <div class="banner-stats">
-            <div class="stat-item"><div class="stat-num" id="stat-total">48</div><div class="stat-label">精选好书</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-total">100</div><div class="stat-label">精选好书</div></div>
             <div class="stat-item"><div class="stat-num" id="stat-read">0</div><div class="stat-label">已读</div></div>
             <div class="stat-item"><div class="stat-num" id="stat-want">0</div><div class="stat-label">想读</div></div>
             <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">分类</div></div>
@@ -471,7 +471,7 @@
         <!-- Book Grid -->
         <div class="section-title">
           <span id="grid-title">全部书籍</span>
-          <span class="badge" id="grid-count">48本</span>
+          <span class="badge" id="grid-count">100本</span>
         </div>
         <div class="book-grid" id="book-grid"></div>
       </div>
@@ -988,7 +988,7 @@ const BADGE_DEFS = [
   { id: 'five_books',    icon: '📚', name: '书虫',       desc: '累计学完5本书',                color: ['#1a2a3e','#1b4d6b'], check: (r) => r.length >= 5 },
   { id: 'ten_books',     icon: '🔥', name: '阅读达人',   desc: '累计学完10本书',               color: ['#3a1a1a','#6b2020'], check: (r) => r.length >= 10 },
   { id: 'twenty_books',  icon: '⚡', name: '知识猎手',   desc: '累计学完20本书',               color: ['#2a1a3e','#5c1b6b'], check: (r) => r.length >= 20 },
-  { id: 'all_books',     icon: '👑', name: '智慧之王',   desc: '完成全部48本书的学习！',        color: ['#3e2a1a','#6b4d1b'], check: (r) => r.length >= 48 },
+  { id: 'all_books',     icon: '👑', name: '智慧之王',   desc: '完成全部100本书的学习！',       color: ['#3e2a1a','#6b4d1b'], check: (r) => r.length >= 100 },
   // 领域类
   { id: 'mindset_done',  icon: '🧠', name: '思维大师',   desc: '学完「思维认知」全部书籍',     color: ['#1a1a3e','#2d1b69'], check: (r, cats) => isCatDone(r, cats, 'mindset') },
   { id: 'wealth_done',   icon: '💰', name: '财富智者',   desc: '学完「财富投资」全部书籍',     color: ['#3e3a1a','#6b5c1b'], check: (r, cats) => isCatDone(r, cats, 'wealth') },
