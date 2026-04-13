@@ -431,7 +431,7 @@
   <div id="header">
     <div>
       <div class="logo" onclick="goHome()" style="cursor:pointer">周公解书</div>
-      <div class="subtitle">100本经典，精华解读</div>
+      <div class="subtitle" id="header-subtitle">100本经典，精华解读</div>
     </div>
     <div class="header-right">
       <button class="icon-btn" onclick="openSubmitModal()" title="提交书籍">➕</button>
@@ -455,9 +455,9 @@
         <!-- Banner -->
         <div class="banner fade-in">
           <div class="banner-title">📚 每天一本好书</div>
-          <div class="banner-sub">精选100本改变人生的经典，提炼核心智慧，让阅读更高效</div>
+          <div class="banner-sub" id="banner-sub">精选100本改变人生的经典，提炼核心智慧，让阅读更高效</div>
           <div class="banner-stats">
-            <div class="stat-item"><div class="stat-num" id="stat-total">100</div><div class="stat-label">精选好书</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-total">-</div><div class="stat-label">精选好书</div></div>
             <div class="stat-item"><div class="stat-num" id="stat-read">0</div><div class="stat-label">已读</div></div>
             <div class="stat-item"><div class="stat-num" id="stat-want">0</div><div class="stat-label">想读</div></div>
             <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">分类</div></div>
@@ -1228,8 +1228,12 @@ async function syncProgressFromCloud() {
 }
 
 function updateBannerStats() {
-  const r = document.getElementById('stat-read'); if (r) r.textContent = getReadList().length;
-  const w = document.getElementById('stat-want'); if (w) w.textContent = getWantList().length;
+const total = allBooks.length;
+const t = document.getElementById('stat-total'); if (t) t.textContent = total;
+const r = document.getElementById('stat-read'); if (r) r.textContent = getReadList().length;
+const w = document.getElementById('stat-want'); if (w) w.textContent = getWantList().length;
+const sub = document.getElementById('banner-sub'); if (sub) sub.textContent = `精选${total}本改变人生的经典，提炼核心智慧，让阅读更高效`;
+const hdr = document.getElementById('header-subtitle'); if (hdr) hdr.textContent = `${total}本经典，精华解读`;
 }
 
 // ===== HTML Escape =====
